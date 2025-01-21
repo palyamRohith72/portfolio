@@ -78,16 +78,18 @@ class DataBase:
         with tab2:
             filters = {"purpose": self.purpose, "company": self.company, "name": self.name, "designation": self.designation, "linkedin_url": self.linkedin_url}
             result = self.get_data(filters)
-
-            st.subheader("Your Details", divider='green')
-            for data in result:
-                col1, col2 = st.columns([1, 2], gap='small',border=True)
-                col1.image(data["photo"])
-                col2.text(f"Name: {data['name']}")
-                col2.text(f"Designation: {data['designation']}")
-                col2.text(f"Company: {data['company']}")
-                col2.text(f"LinkedIn URL: {data['linkedin_url']}")
-                col2.text(f"Purpose of Visiting: {data['purpose']}")
+            if self.purpose!="Just for fun":
+                st.subheader("Your Details", divider='green')
+                for data in result:
+                    col1, col2 = st.columns([1, 2], gap='small',border=True)
+                    col1.image(data["photo"])
+                    col2.text(f"Name: {data['name']}")
+                    col2.text(f"Designation: {data['designation']}")
+                    col2.text(f"Company: {data['company']}")
+                    col2.text(f"LinkedIn URL: {data['linkedin_url']}")
+                    col2.text(f"Purpose of Visiting: {data['purpose']}")
+            else:
+                st.warning("You Not Yet Registered.\nRegister First")
 
         with tab3:
             filters = {"purpose": self.purpose, "company": self.company, "name": self.name, "designation": self.designation, "linkedin_url": self.linkedin_url}
