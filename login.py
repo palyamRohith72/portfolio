@@ -1,7 +1,7 @@
 import streamlit as st
 from pymongo import MongoClient
 from bson.binary import Binary
-from streamlit_extras.metric_cards import style_metric_card
+from streamlit_extras.metric_cards import style_metric_cards
 
 class DataBase:
     def __init__(self):
@@ -71,7 +71,7 @@ class DataBase:
                             if success:
                                 st.success("Added your data. You can view it in the 'Your Data Is Displayed Here' tab.")
             with col1:
-                style_metric_card()
+                style_metric_cards()
                 st.metric_card(f"Total Views {self.collection.count_documents({})}")
                 
 
