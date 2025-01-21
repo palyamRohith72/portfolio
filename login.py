@@ -72,7 +72,7 @@ class DataBase:
                                 st.success("Added your data. You can view it in the 'Your Data Is Displayed Here' tab.")
             with col1:
                 style_metric_cards()
-                st.metric_card(f"Total Views {self.collection.count_documents({})}")
+                st.metric(f"Total Views {self.collection.count_documents({})}")
                 
 
         with tab2:
