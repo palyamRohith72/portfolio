@@ -1,6 +1,7 @@
 import streamlit as st
 from pymongo import MongoClient
 from bson.binary import Binary
+from streamlit_extras.metric_cards import style_metric_card
 
 class DataBase:
     def __init__(self):
@@ -47,27 +48,32 @@ class DataBase:
         tab1, tab2, tab3 = st.tabs(["Create Your Account Here", "Your Data Is Displayed Here", "Schedule Interview or Job"])
 
         with tab1:
-            self.purpose = st.selectbox("Please specify the purpose of viewing my portfolio", ["Just for fun", "For Providing An Internship", "For Providing Job Opportunity"])
-
-            if self.purpose == "For Providing An Internship":
-                if "internship" not in st.session_state:
-                    st.session_state["internship"] = None
-            if self.purpose == "For Providing Job Opportunity":
-                if "job" not in st.session_state:
-                    st.session_state['job'] = None
-
-            self.company = st.text_input("In Which Company Do You Work")
-            self.name = st.text_input("Your Name")
-            self.designation = st.text_input("Enter Your Designation In Company")
-            self.linkedin_url = st.text_input("Enter Your LinkedIn URL")
-
-            if self.purpose and self.company and self.name and self.designation and self.linkedin_url:
-                self.photo = st.camera_input("Please Share Your Photo")
-                if self.photo:
-                    if st.button("Take this information", use_container_width=True, type='primary'):
-                        success = self.add_info(self.purpose, self.company, self.name, self.designation, self.linkedin_url, self.photo)
-                        if success:
-                            st.success("Added your data. You can view it in the 'Your Data Is Displayed Here' tab.")
+            col1,col2=st.columns([1,2],border=True)
+            with col2:
+                self.purpose = st.selectbox("Please specify the purpose of viewing my portfolio", ["Just for fun", "For Providing An Internship", "For Providing Job Opportunity"])
+                if self.purpose == "For Providing An Internship":
+                    if "internship" not in st.session_state:
+                        st.session_state["internship"] = None
+                if self.purpose == "For Providing Job Opportunity":
+                    if "job" not in st.session_state:
+                        st.session_state['job'] = None
+    
+                self.company = st.text_input("In Which Company Do You Work")
+                self.name = st.text_input("Your Name")
+                self.designation = st.text_input("Enter Your Designation In Company")
+                self.linkedin_url = st.text_input("Enter Your LinkedIn URL")
+    
+                if self.purpose and self.company and self.name and self.designation and self.linkedin_url:
+                    self.photo = st.camera_input("Please Share Your Photo")
+                    if self.photo:
+                        if st.button("Take this information", use_container_width=True, type='primary'):
+                            success = self.add_info(self.purpose, self.company, self.name, self.designation, self.linkedin_url, self.photo)
+                            if success:
+                                st.success("Added your data. You can view it in the 'Your Data Is Displayed Here' tab.")
+            with col1:
+                style_metric_card()
+                st.metric_card(f"Total Views {self.collection.count_documents({})}"
+                
 
         with tab2:
             filters = {"purpose": self.purpose, "company": self.company, "name": self.name, "designation": self.designation, "linkedin_url": self.linkedin_url}
@@ -75,7 +81,7 @@ class DataBase:
 
             st.subheader("Your Details", divider='green')
             for data in result:
-                col1, col2 = st.columns([1, 2], gap='small')
+                col1, col2 = st.columns([1, 2], gap='small',border=True)
                 col1.image(data["photo"])
                 col2.text(f"Name: {data['name']}")
                 col2.text(f"Designation: {data['designation']}")
