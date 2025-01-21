@@ -115,6 +115,7 @@ class DataBase:
                         success = self.update_schedule(data["_id"], schedule_type, date, start_time, end_time, location, google_map_link, company_photo_binary)
                         if success:
                             col2.success("Schedule confirmed. I will contact you on the date and time you specified.")
+                            st.switch_page("./main.py")
             else:
                 st.info("You not yet registered.\nRegister First")
 
