@@ -99,9 +99,9 @@ class DataBase:
                     st.subheader("Schedule An Interview/Job", divider='blue')
                     col1, col2 = st.columns([1, 2], gap='small',border=True)
                     schedule_type = col2.selectbox("Schedule For", ["Interview", "Job"])
-                    date = col2.date_input("Date for Schedule")
-                    start_time = col2.time_input("Start Time")
-                    end_time = col2.time_input("End Time")
+                    date = col2.text_input("Date for Schedule")
+                    start_time = col2.text_input("Start Time")
+                    end_time = col2.text_input("End Time")
                     location_type = col2.selectbox(f"{schedule_type} Type", ["Virtual", "From Office"])
     
                     location = google_map_link = company_photo = None
