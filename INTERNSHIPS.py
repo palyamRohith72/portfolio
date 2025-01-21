@@ -19,7 +19,7 @@ class Internship:
         st.dataframe(dataFrame, use_container_width=True)
         
         # Internship selection
-        col1, col2 = st.columns([1, 2],border=True)
+        col1, col2 = st.columns([1, 2],border=True,gap='small')
         with col1:
             internshipSelected = st.pills("Select the Internship That You Want To Know", ["Full Stack Web Development"])
         
