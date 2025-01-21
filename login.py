@@ -92,26 +92,28 @@ class DataBase:
         with tab3:
             filters = {"purpose": self.purpose, "company": self.company, "name": self.name, "designation": self.designation, "linkedin_url": self.linkedin_url}
             result = self.get_data(filters)
-
-            for data in result:
-                st.subheader("Schedule An Interview/Job", divider='blue')
-                col1, col2 = st.columns([1, 2], gap='small',border=True)
-                schedule_type = col2.selectbox("Schedule For", ["Interview", "Job"])
-                date = col2.date_input("Date for Schedule")
-                start_time = col2.time_input("Start Time")
-                end_time = col2.time_input("End Time")
-                location_type = col2.selectbox(f"{schedule_type} Type", ["Virtual", "From Office"])
-
-                location = google_map_link = company_photo = None
-                if location_type != "Virtual":
-                    location = col2.text_area("Enter Location")
-                    google_map_link = col2.text_input("Enter Google Map Link")
-                    company_photo = col2.file_uploader("Upload Company Building Photo For Reference", type=["jpeg", "jpg", "png"])
-
-                if col2.button("Confirm Schedule", use_container_width=True, type='primary'):
-                    company_photo_binary = Binary(company_photo.read()) if company_photo else None
-                    success = self.update_schedule(data["_id"], schedule_type, date, start_time, end_time, location, google_map_link, company_photo_binary)
-                    if success:
-                        col2.success("Schedule confirmed. I will contact you on the date and time you specified.")
+            if self.purpose != "Just for fun":
+                for data in result:
+                    st.subheader("Schedule An Interview/Job", divider='blue')
+                    col1, col2 = st.columns([1, 2], gap='small',border=True)
+                    schedule_type = col2.selectbox("Schedule For", ["Interview", "Job"])
+                    date = col2.date_input("Date for Schedule")
+                    start_time = col2.time_input("Start Time")
+                    end_time = col2.time_input("End Time")
+                    location_type = col2.selectbox(f"{schedule_type} Type", ["Virtual", "From Office"])
+    
+                    location = google_map_link = company_photo = None
+                    if location_type != "Virtual":
+                        location = col2.text_area("Enter Location")
+                        google_map_link = col2.text_input("Enter Google Map Link")
+                        company_photo = col2.file_uploader("Upload Company Building Photo For Reference", type=["jpeg", "jpg", "png"])
+    
+                    if col2.button("Confirm Schedule", use_container_width=True, type='primary'):
+                        company_photo_binary = Binary(company_photo.read()) if company_photo else None
+                        success = self.update_schedule(data["_id"], schedule_type, date, start_time, end_time, location, google_map_link, company_photo_binary)
+                        if success:
+                            col2.success("Schedule confirmed. I will contact you on the date and time you specified.")
+            else:
+                st.info("You not yet registered.\nRegister First")
 
 DataBase().display()
